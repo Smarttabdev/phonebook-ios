@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Text } from 'react-native';
-import { BottomNavigation } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import materialTheme from '../../constants/Theme';
 import CallLogScreen from '../pages/Calllogs';

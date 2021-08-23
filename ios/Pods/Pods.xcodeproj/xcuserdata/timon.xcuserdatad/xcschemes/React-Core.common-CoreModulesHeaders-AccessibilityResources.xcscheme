@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7A020DAB6F3F0BA0A6D9946E84B38B7F"
-               BuildableName = "React-Core-AccessibilityResources.bundle"
-               BlueprintName = "React-Core-AccessibilityResources"
+               BlueprintIdentifier = "EED7CC62CBF40A7F7D1A7A6243830B9C"
+               BuildableName = "React-Core.common-CoreModulesHeaders-AccessibilityResources.bundle"
+               BlueprintName = "React-Core.common-CoreModulesHeaders-AccessibilityResources"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

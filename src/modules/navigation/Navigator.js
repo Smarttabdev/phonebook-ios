@@ -115,15 +115,11 @@ export default function App()
 {
 
   return (
-    // <Drawer.Navigator
-    //   drawerStyle={{
-    //     backgroundColor: '#3C38B1',
-    //   }}
-    //   drawerContent={props => <CustomDrawerContent {...props} />}
-    // >
-    //   <Drawer.Screen name="Homes" component={NavigatorView} />
-    // </Drawer.Navigator>
-    <Stack.Navigator mode="card" headerShown="false">
+    <Stack.Navigator 
+      screenOptions={{
+        headerShown: false,
+        presentation: "card"
+      }}>
       <Stack.Screen
         name="Onboarding"
         component={OnboardingScreen}

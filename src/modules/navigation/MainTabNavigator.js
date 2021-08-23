@@ -9,7 +9,7 @@ const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {
   return (
-    <Tab.Navigator tabBarOptions={{style: {height: Platform.OS === 'ios' ? 90 : 50}}}>
+    <Tab.Navigator screenOptions={{style: {height: Platform.OS === 'ios' ? 90 : 50}}}>
       {tabNavigationData.map((item, idx) => (
         <Tab.Screen 
           key={`tab_item${idx+1}`}

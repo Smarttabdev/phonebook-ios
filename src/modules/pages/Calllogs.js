@@ -5,15 +5,16 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import CallLogs from 'react-native-call-log'
 import CallDetectorManager from 'react-native-call-detection'
 import { showMessage } from "react-native-flash-message"
+import {openDatabase} from 'react-native-sqlite-storage';
 
 import * as MainServices from '../../services/mainService'
 
 import Header from '../components/Header'
 import materialTheme from '../../constants/Theme'
-import { clearStorage } from '../../services/storageService'
 
 
 const { width, height } = Dimensions.get('screen')
+var db = openDatabase({name: 'UserDatabase.db'});
 
 const filter = {
   phoneNumbers: '+1234567',
@@ -25,8 +26,26 @@ const filter = {
 export default function CallLogScreen({ navigation })
 {
   const [callLog, setCallLog] = useState({})
-  const [incomingNumber, setIncomingNumber] = useState()
+  const [incomingNumber, setIncomingNumber] = useState(null)
+  const [callType, setCallType] = useState()
   const [callState, setCallState] = useState(false)
+  //Duplicated call log
+  const duplicatedCallLog = (logs) => {
+    const duplicatedLog = {}
+      logs.map((log) =>
+      {
+        if (duplicatedLog.hasOwnProperty(log.phoneNumber))
+        {
+          duplicatedLog[log.phoneNumber].push(log)
+        } else
+        {
+          duplicatedLog[log.phoneNumber] = []
+          duplicatedLog[log.phoneNumber].push(log)
+        }
+      })
+
+      setCallLog(duplicatedLog)
+  }
   //callLog
   useEffect(() =>
   {
@@ -52,21 +71,7 @@ export default function CallLogScreen({ navigation })
   
             CallLogs.loadAll().then(logs =>
             {
-  
-              const duplicatedLog = {}
-              logs.map((log) =>
-              {
-                if (duplicatedLog.hasOwnProperty(log.phoneNumber))
-                {
-                  duplicatedLog[log.phoneNumber].push(log)
-                } else
-                {
-                  duplicatedLog[log.phoneNumber] = []
-                  duplicatedLog[log.phoneNumber].push(log)
-                }
-              })
-  
-              setCallLog(duplicatedLog)
+              duplicatedCallLog(logs)
             })
   
           } else
@@ -82,6 +87,22 @@ export default function CallLogScreen({ navigation })
     }
     if(Platform.OS === 'ios'){
       console.log('IOS,,,,,,,,,')
+      const datetime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')  
+      console.log(datetime)
+      if(incomingNumber){
+        db.transaction(function (tx) {
+          tx.executeSql(
+            'INSERT INTO call_logs (phonenumber, datetime, type) VALUES (?,?,?)',
+            [incomingNumber, datetime, callType],
+            (tx, results) => {
+              console.log('Results', results.rowsAffected);
+              if (results.rowsAffected > 0) {
+                console.log('success')
+              } else alert('Registration Failed');
+            },
+          );
+        });
+      }
     }
     
   }, [callState === false])
@@ -131,18 +152,22 @@ export default function CallLogScreen({ navigation })
 
       if (event === 'Disconnected')
       {
+        setCallType('MISSED')
         // Do something call got disconnected
         setCallState(false)
       } else if (event === 'Connected')
       {
+        setCallType('INCOMING')
         // Do something call got connected
         // This clause will only be executed for iOS
       } else if (event === 'Incoming')
       {
         setIncomingNumber(number)
         setCallState(true)
+        setCallType('INCOMING')
       } else if (event === 'Dialing')
       {
+        setCallType('OUTGOING')
         // Do something call got dialing
         // This clause will only be executed for iOS
       } else if (event === 'Offhook')

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Dimensions, ScrollView, View, Button, TextInput, ImageBackground } from 'react-native'
+import { StyleSheet, Dimensions, ScrollView, View, Button, TextInput, ImageBackground, Platform } from 'react-native'
 import { Block, Text, Input, theme } from 'galio-framework'
 
 import Header from '../components/Header'
@@ -8,6 +8,7 @@ import * as MainServices from '../../services/mainService'
 
 
 const { width, height } = Dimensions.get('screen')
+const iPhoneX = () => Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
 export default function EditInfo({ navigation, route })
 {
@@ -16,25 +17,9 @@ export default function EditInfo({ navigation, route })
   const area = data.meiwaku.area_code
   const city = data.meiwaku.city_code
   const number = data.meiwaku.telephone_numbers
-  // useEffect(() =>
-  // {
-  //   MainServices.getTelephoneInfo({ area, city, number }).then(result =>
-  //   {
-  //     if (result.data.key === 'nai')
-  //     {
-
-  //     } else
-  //     {
-  //       setData(result.data)
-  //     }
-  //   })
-  // }, [])
 
   const plus = () =>
   {
-    // const temp = { ...data }
-    // temp.meiwaku.plus += 1
-    // setData(temp)
     MainServices.spamPlus({ area, city, number }).then(result =>
     {
       console.log(result.data, '===========')
@@ -203,12 +188,13 @@ export default function EditInfo({ navigation, route })
             onChangeText={(text) => inputChange(text, 'site')}
           ></Input>
           <TextInput
-            numberOfLines={4}
+            numberOfLines={Platform.OS === 'ios' ? null : 4}
+            minHeight={Platform.OS === 'ios'  ? (theme.SIZES.BASE * 7) : null}
             multiline={true}
             color={'black'}
             placeholder='事業内容'
             placeholderTextColor={materialTheme.COLORS.MUTED}
-            style={[styles.input, { padding: theme.SIZES.BASE }]}
+            style={[styles.input, { padding: Platform.OS === 'ios' ? theme.SIZES.BASE  : theme.SIZES.BASE, paddingTop:  iPhoneX ? theme.SIZES.BASE : null, }]}
             value={data.place.jigyo_naoyo}
             onChangeText={(text) => inputChange(text, 'jigyo_naoyo')}
           ></TextInput>
@@ -220,14 +206,13 @@ export default function EditInfo({ navigation, route })
         </Block>
       </ScrollView>
     </>
-
   )
 }
 
 const styles = StyleSheet.create({
   home: {
     width: width,
-    padding: theme.SIZES.BASE
+    padding: iPhoneX ? theme.SIZES.BASE * 1.5 : theme.SIZES.BASE
   },
 
   row: {
@@ -246,36 +231,39 @@ const styles = StyleSheet.create({
   button: {
     // width: width / 4,
     color: 'black',
-    borderRadius: 30,
+    borderRadius: 20,
     // elevation: 8,
     paddingVertical: theme.SIZES.BASE / 1.4,
     paddingHorizontal: theme.SIZES.BASE * 2,
     backgroundColor: materialTheme.COLORS.DEFAULT,
+    overflow: iPhoneX ? 'hidden' : null
   },
 
   button1: {
     // width: width / 4,
     color: 'white',
-    borderRadius: 50,
+    borderRadius: 20,
     // elevation: 8,
     // backgroundColor: materialTheme.COLORS.DEFAULT,
     paddingVertical: theme.SIZES.BASE / 1.4,
-    paddingHorizontal: theme.SIZES.BASE / 1.5
+    paddingHorizontal: theme.SIZES.BASE / 1.5,
+    overflow: iPhoneX ? 'hidden' : null
   },
 
   saveButton: {
     color: 'white',
-    borderRadius: 50,
+    borderRadius: 23,
     // elevation: 8,
     marginTop: theme.SIZES.BASE,
     textAlign: 'center',
     backgroundColor: materialTheme.COLORS.PRIMARY,
     paddingVertical: theme.SIZES.BASE,
-    paddingHorizontal: theme.SIZES.BASE * 2
+    paddingHorizontal: theme.SIZES.BASE * 2,
+    overflow: iPhoneX ? 'hidden' : null
   },
 
   input: {
-    borderRadius: 30,
+    borderRadius: 23,
     // borderColor: 'transparent',
     borderColor: materialTheme.COLORS.INPUT,
     backgroundColor: materialTheme.COLORS.DEFAULT,

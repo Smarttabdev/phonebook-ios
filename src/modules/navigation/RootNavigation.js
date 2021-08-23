@@ -57,9 +57,9 @@ export default function NavigatorView(props)
     //   ))}
     // </Stack.Navigator>
     <Stack.Navigator 
-      mode="card" 
       screenOptions={{
-        headerShown: false
+        headerShown: false,
+        presentation: "card"
       }}>
       <Stack.Screen
         name="Onboarding"
