@@ -27,7 +27,7 @@ export default function ContactScreen({ navigation })
         setResult(false)
         MainServices.getTelephoneInfo({ area, city, number }).then(res =>
         {
-          console.log(res.data)
+          console.log(res.data.area, '==========')
           navigation.navigate('EditInfo', { data: res.data })
         })
       } else

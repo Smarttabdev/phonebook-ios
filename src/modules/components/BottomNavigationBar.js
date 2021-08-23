@@ -12,15 +12,20 @@ const BottomNavigationBar = ({ navigation }) =>
 {
   return (
     <Tab.Navigator
-      tabBarOptions={{
+      screenOptions={{
         style: { height: Platform.OS === 'ios' ? 90 : 50 },
         showIcon: true,
-        inactiveTintColor: 'white',
-        tabStyle: {
+        tabBarInactiveTintColor: 'white',
+        tabBarItemStyle: {
           backgroundColor: materialTheme.COLORS.PRIMARY,
         },
+        tabBarStyle: [
+          {
+            "display": "flex"
+          },
+          null
+        ]
       }}
-
     >
       <Tab.Screen
         name="CallLog"

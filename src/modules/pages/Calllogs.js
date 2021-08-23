@@ -86,7 +86,6 @@ export default function CallLogScreen({ navigation })
       })()
     }
     if(Platform.OS === 'ios'){
-      console.log('IOS,,,,,,,,,')
       const datetime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')  
       console.log(datetime)
       if(incomingNumber){

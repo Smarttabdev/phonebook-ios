@@ -12,7 +12,7 @@ const { width, height } = Dimensions.get('screen')
 
 export default function EditComment({ navigation, route })
 {
-  const [comments, setComments] = useState(route.params.comments)
+  const [comments, setComments] = useState(route.params.data.com.data)
 
   const plus = (comment) =>
   {
@@ -56,7 +56,7 @@ export default function EditComment({ navigation, route })
 
   return (
     <>
-      <Header title={'コメントログビューア'} move={'EditInfo'} navigation={navigation}></Header>
+      <Header title={'コメントログビューア'} move={'EditInfo'} data={route.params.data} navigation={navigation}></Header>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block flex style={styles.home}>
           {

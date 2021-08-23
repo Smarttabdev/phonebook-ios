@@ -9,12 +9,12 @@ import { Button, Block, NavBar, Input, Text, theme } from 'galio-framework';
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () => Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
-const Header = ({ navigation, title, white, transparent, back, move }) =>
+const Header = ({ navigation, title, white, transparent, data, back, move }) =>
 {
   const handleLeftPress = () =>
   {
     console.log(move)
-    navigation.navigate(move)
+    navigation.navigate(move,  { data: data })
   }
 
   const noShadow = ["Search", "Categories", "Deals", "Pro", "Profile"].includes(title);

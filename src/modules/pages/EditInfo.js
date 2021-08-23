@@ -22,7 +22,6 @@ export default function EditInfo({ navigation, route })
   {
     MainServices.spamPlus({ area, city, number }).then(result =>
     {
-      console.log(result.data, '===========')
       const temp = { ...data }
       temp.meiwaku = result.data
       setData(temp)
@@ -139,68 +138,73 @@ export default function EditInfo({ navigation, route })
               <Text style={[styles.button1, { backgroundColor: materialTheme.COLORS.ERROR }]} onPress={() => minus()}>迷惑電話だ！</Text>
             </View>
           </View>
-          <Input
-            color={'black'}
-            placeholder='事業者名(必須)'
-            placeholderTextColor={materialTheme.COLORS.MUTED}
-            style={styles.input}
-            value={data.place.company}
-            onChangeText={(text) => inputChange(text, 'company')}
-          ></Input>
-          <Input
-            color={'black'}
-            placeholder='業種'
-            placeholderTextColor={materialTheme.COLORS.MUTED}
-            style={styles.input}
-            value={data.place.ghoshu}
-            onChangeText={(text) => inputChange(text, 'ghoshu')}
-          ></Input>
-          <Input
-            color={'black'}
-            placeholder='住所'
-            placeholderTextColor={materialTheme.COLORS.MUTED}
-            style={styles.input}
-            value={data.place.jusho}
-            onChangeText={(text) => inputChange(text, 'jusho')}
-          ></Input>
-          <Input
-            color={'black'}
-            placeholder='最寄駅'
-            placeholderTextColor={materialTheme.COLORS.MUTED}
-            style={styles.input}
-            value={data.place.moyorieki}
-            onChangeText={(text) => inputChange(text, 'moyorieki')}
-          ></Input>
-          <Input
-            color={'black'}
-            placeholder='アクセス'
-            placeholderTextColor={materialTheme.COLORS.MUTED}
-            style={styles.input}
-            value={data.place.access}
-            onChangeText={(text) => inputChange(text, 'access')}
-          ></Input>
-          <Input
-            color={'black'}
-            placeholder='公式サイト'
-            placeholderTextColor={materialTheme.COLORS.MUTED}
-            style={styles.input}
-            value={data.place.site}
-            onChangeText={(text) => inputChange(text, 'site')}
-          ></Input>
-          <TextInput
-            numberOfLines={Platform.OS === 'ios' ? null : 4}
-            minHeight={Platform.OS === 'ios'  ? (theme.SIZES.BASE * 7) : null}
-            multiline={true}
-            color={'black'}
-            placeholder='事業内容'
-            placeholderTextColor={materialTheme.COLORS.MUTED}
-            style={[styles.input, { padding: Platform.OS === 'ios' ? theme.SIZES.BASE  : theme.SIZES.BASE, paddingTop:  iPhoneX ? theme.SIZES.BASE : null, }]}
-            value={data.place.jigyo_naoyo}
-            onChangeText={(text) => inputChange(text, 'jigyo_naoyo')}
-          ></TextInput>
+          {data.place ? (
+            <>
+              <Input
+              color={'black'}
+              placeholder='事業者名(必須)'
+              placeholderTextColor={materialTheme.COLORS.MUTED}
+              style={styles.input}
+              value={data.place.company}
+              onChangeText={(text) => inputChange(text, 'company')}
+              ></Input>
+              <Input
+                color={'black'}
+                placeholder='業種'
+                placeholderTextColor={materialTheme.COLORS.MUTED}
+                style={styles.input}
+                value={data.place.ghoshu}
+                onChangeText={(text) => inputChange(text, 'ghoshu')}
+              ></Input>
+              <Input
+                color={'black'}
+                placeholder='住所'
+                placeholderTextColor={materialTheme.COLORS.MUTED}
+                style={styles.input}
+                value={data.place.jusho}
+                onChangeText={(text) => inputChange(text, 'jusho')}
+              ></Input>
+              <Input
+                color={'black'}
+                placeholder='最寄駅'
+                placeholderTextColor={materialTheme.COLORS.MUTED}
+                style={styles.input}
+                value={data.place.moyorieki}
+                onChangeText={(text) => inputChange(text, 'moyorieki')}
+              ></Input>
+              <Input
+                color={'black'}
+                placeholder='アクセス'
+                placeholderTextColor={materialTheme.COLORS.MUTED}
+                style={styles.input}
+                value={data.place.access}
+                onChangeText={(text) => inputChange(text, 'access')}
+              ></Input>
+              <Input
+                color={'black'}
+                placeholder='公式サイト'
+                placeholderTextColor={materialTheme.COLORS.MUTED}
+                style={styles.input}
+                value={data.place.site}
+                onChangeText={(text) => inputChange(text, 'site')}
+              ></Input>
+              <TextInput
+                numberOfLines={Platform.OS === 'ios' ? null : 4}
+                minHeight={Platform.OS === 'ios'  ? (theme.SIZES.BASE * 7) : null}
+                multiline={true}
+                color={'black'}
+                placeholder='事業内容'
+                placeholderTextColor={materialTheme.COLORS.MUTED}
+                style={[styles.input, { padding: Platform.OS === 'ios' ? theme.SIZES.BASE  : theme.SIZES.BASE, paddingTop:  iPhoneX ? theme.SIZES.BASE : null, }]}
+                value={data.place.jigyo_naoyo}
+                onChangeText={(text) => inputChange(text, 'jigyo_naoyo')}
+              ></TextInput>
+            </>
+          ) : null}
+          
           <Text
             style={{ fontSize: 17, color: materialTheme.COLORS.ERROR, marginTop: theme.SIZES.BASE }}
-            onPress={() => navigation.navigate('EditComment', { comments: data.com.data })}
+            onPress={() => navigation.navigate('EditComment', { data: data })}
           >コメントログビューア</Text>
           <Text style={[styles.saveButton]} onPress={() => saveInfo()}>保存</Text>
         </Block>
