@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Dimensions, ScrollView, View, ImageBackground, PermissionsAndroid, Platform } from 'react-native'
+import { StyleSheet, Dimensions, ScrollView, View, ImageBackground, PermissionsAndroid, Platform} from 'react-native'
 import { Button, Block, Text, theme } from 'galio-framework'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import CallLogs from 'react-native-call-log'
 import CallDetectorManager from 'react-native-call-detection'
 import { showMessage } from "react-native-flash-message"
 import {openDatabase} from 'react-native-sqlite-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as MainServices from '../../services/mainService'
 
 import Header from '../components/Header'
 import materialTheme from '../../constants/Theme'
+import { clearStorage } from '../../services/storageService'
 
 
 const { width, height } = Dimensions.get('screen')
-var db = openDatabase({name: 'UserDatabase.db'});
 
 const filter = {
   phoneNumbers: '+1234567',
@@ -41,10 +42,29 @@ export default function CallLogScreen({ navigation })
         {
           duplicatedLog[log.phoneNumber] = []
           duplicatedLog[log.phoneNumber].push(log)
+          
         }
       })
 
       setCallLog(duplicatedLog)
+  }
+  //IOS getting calllogs
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('call_log', jsonValue)
+      console.log(jsonValue)
+    } catch (e) {
+      // saving error
+    }
+  }
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('call_log')
+      return jsonValue != null ? JSON.parse(jsonValue) : [];
+    } catch(e) {
+      // error reading value
+    }
   }
   //callLog
   useEffect(() =>
@@ -86,24 +106,19 @@ export default function CallLogScreen({ navigation })
       })()
     }
     if(Platform.OS === 'ios'){
-      const datetime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')  
-      console.log(datetime)
-      if(incomingNumber){
-        db.transaction(function (tx) {
-          tx.executeSql(
-            'INSERT INTO call_logs (phonenumber, datetime, type) VALUES (?,?,?)',
-            [incomingNumber, datetime, callType],
-            (tx, results) => {
-              console.log('Results', results.rowsAffected);
-              if (results.rowsAffected > 0) {
-                console.log('success')
-              } else alert('Registration Failed');
-            },
-          );
-        });
-      }
+      (async () => {
+        try {
+          const callLogs = await getData()
+          // const datetime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+          // callLogs.push({phoneNumber: ' 08009198670', type: 'UNKNOWN', datetime})
+          // await storeData(callLogs)
+          duplicatedCallLog(callLogs)
+        } catch (error) {
+          console.log(error)
+        }
+        
+      })()
     }
-    
   }, [callState === false])
 
   useEffect(() =>
@@ -145,6 +160,14 @@ export default function CallLogScreen({ navigation })
     }
   }, [callState === true])
 
+  //ios call log save
+  const iosCallLogSave = async () => {
+    const callLogs = await getData()
+    const datetime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+    callLogs.push({phoneNumber: incomingNumber, type: callType, datetime})
+    await storeData(callLogs)
+  }
+
   let callDetector = new CallDetectorManager(
     (event, number) =>
     {
@@ -154,9 +177,11 @@ export default function CallLogScreen({ navigation })
         setCallType('MISSED')
         // Do something call got disconnected
         setCallState(false)
+        iosCallLogSave()
       } else if (event === 'Connected')
       {
         setCallType('INCOMING')
+        iosCallLogSave()
         // Do something call got connected
         // This clause will only be executed for iOS
       } else if (event === 'Incoming')
@@ -164,9 +189,11 @@ export default function CallLogScreen({ navigation })
         setIncomingNumber(number)
         setCallState(true)
         setCallType('INCOMING')
+        iosCallLogSave()
       } else if (event === 'Dialing')
       {
         setCallType('OUTGOING')
+        iosCallLogSave()
         // Do something call got dialing
         // This clause will only be executed for iOS
       } else if (event === 'Offhook')
@@ -199,6 +226,7 @@ export default function CallLogScreen({ navigation })
 
   const renderCallLogType = (log) =>
   {
+    console.log(log, '===============')
     switch (log.type)
     {
       case 'UNKNOWN':
@@ -244,6 +272,7 @@ export default function CallLogScreen({ navigation })
 
   const logList = (logs) =>
   {
+    console.log(logs, '++++++++++')
     var components = []
     for (const log in logs)
     {
