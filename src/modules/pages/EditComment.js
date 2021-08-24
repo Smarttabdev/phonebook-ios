@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   button1: {
     // width: width / 4,
     color: 'white',
-    borderRadius: 50,
+    borderRadius: 20,
     // elevation: 8,
     // backgroundColor: materialTheme.COLORS.DEFAULT,
     paddingVertical: theme.SIZES.BASE / 1.4,
