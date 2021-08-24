@@ -124,22 +124,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>React-Core.common-AccessibilityResources.xcscheme</key>
+		<key>React-Core-AccessibilityResources.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>React-Core.common-CoreModulesHeaders-AccessibilityResources.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>React-Core.common-CoreModulesHeaders.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>React-Core.common.xcscheme</key>
+		<key>React-Core.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -275,11 +265,6 @@
 			<false/>
 		</dict>
 		<key>react-native-safe-area.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>react-native-sqlite-storage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
