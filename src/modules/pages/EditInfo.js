@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Dimensions, ScrollView, View, Button, TextInput, ImageBackground, Platform } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Dimensions, ScrollView, View, TextInput, Platform } from 'react-native'
 import { Block, Text, Input, theme } from 'galio-framework'
 
 import Header from '../components/Header'

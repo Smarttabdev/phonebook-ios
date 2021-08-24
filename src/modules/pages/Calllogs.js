@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Dimensions, ScrollView, View, ImageBackground, PermissionsAndroid, Platform} from 'react-native'
-import { Button, Block, Text, theme } from 'galio-framework'
+import { Block, Text, theme } from 'galio-framework'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import CallLogs from 'react-native-call-log'
 import CallDetectorManager from 'react-native-call-detection'
 import { showMessage } from "react-native-flash-message"
-import {openDatabase} from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as MainServices from '../../services/mainService'
 
 import Header from '../components/Header'
 import materialTheme from '../../constants/Theme'
-import { clearStorage } from '../../services/storageService'
 
 
 const { width, height } = Dimensions.get('screen')
 
-const filter = {
-  phoneNumbers: '+1234567',
-  minTimestamp: 1571835032,
-  maxTimestamp: 1583318721264,
-}
 
 
 export default function CallLogScreen({ navigation })

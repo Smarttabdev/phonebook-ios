@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import { StyleSheet, Dimensions, ScrollView, View, Button, TextInput, ImageBackground } from 'react-native'
-import { Block, Text, Input, theme } from 'galio-framework'
+import { StyleSheet, Dimensions, ScrollView, View} from 'react-native'
+import { Block, Text, theme } from 'galio-framework'
 
 import Header from '../components/Header'
 
 import materialTheme from '../../constants/Theme'
 import * as MainServices from '../../services/mainService'
-import { useNavigationBuilder } from '@react-navigation/native'
 
 const { width, height } = Dimensions.get('screen')
+const iPhoneX = () => Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
 export default function EditComment({ navigation, route })
 {
@@ -78,15 +78,15 @@ export default function EditComment({ navigation, route })
                 <View style={{ flex: 1 }}>
                   <View style={styles.row}>
                     <View style={[styles.row, styles.alignCenter]}>
-                      <Text style={[styles.button1, { backgroundColor: materialTheme.COLORS.INFO }]} onPress={() => plus(comment)}>プラス</Text>
+                      <Text style={[styles.button, { backgroundColor: materialTheme.COLORS.INFO }]} onPress={() => plus(comment)}>プラス</Text>
                       <Text> :{comment.plus}</Text>
                     </View>
                     <View style={[styles.row, styles.alignCenter]}>
-                      <Text style={[styles.button1, { backgroundColor: materialTheme.COLORS.ERROR }]} onPress={() => minus(comment)}>マイナス</Text>
+                      <Text style={[styles.button, { backgroundColor: materialTheme.COLORS.ERROR }]} onPress={() => minus(comment)}>マイナス</Text>
                       <Text> :{comment.minus}</Text>
                     </View>
                     <View style={[styles.row, styles.alignCenter]}>
-                      <Text style={[styles.button1, { backgroundColor: materialTheme.COLORS.MUTED }]} onPress={() => delReq(comment)}>削除依頼</Text>
+                      <Text style={[styles.button, { backgroundColor: materialTheme.COLORS.MUTED }]} onPress={() => delReq(comment)}>削除依頼</Text>
                       <Text> :{comment.sakujo}</Text>
                     </View>
                   </View>
@@ -118,39 +118,13 @@ const styles = StyleSheet.create({
     // flexWrap: 'wrap',
     // justifyContent: 'space-around',
   },
-
-  label: {
-    fontSize: 13,
-    marginBottom: theme.SIZES.BASE / 2,
-    marginTop: theme.SIZES.BASE
-  },
-
   button: {
-    // width: width / 4,
-    color: 'black',
-    borderRadius: 50,
-    // elevation: 8,
-    backgroundColor: materialTheme.COLORS.DEFAULT,
-    paddingVertical: theme.SIZES.BASE / 1.4,
-    paddingHorizontal: theme.SIZES.BASE * 2
-  },
-
-  button1: {
-    // width: width / 4,
     color: 'white',
-    borderRadius: 20,
-    // elevation: 8,
-    // backgroundColor: materialTheme.COLORS.DEFAULT,
+    borderRadius: iPhoneX ? 18 : 30,
     paddingVertical: theme.SIZES.BASE / 1.4,
-    paddingHorizontal: theme.SIZES.BASE / 1.5
+    paddingHorizontal: theme.SIZES.BASE / 1.5,
+    overflow: iPhoneX ? 'hidden' : null
   },
-
-  input: {
-    borderRadius: 30,
-    borderColor: materialTheme.COLORS.INPUT,
-    backgroundColor: materialTheme.COLORS.DEFAULT,
-    color: 'black',
-  }
 
 
 })
